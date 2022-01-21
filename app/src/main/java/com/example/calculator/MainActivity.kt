@@ -2,121 +2,128 @@ package com.example.calculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import com.example.calculator.databinding.ActivityMainBinding
+import java.lang.NullPointerException
 
 class MainActivity : AppCompatActivity() {
+
+    var add: String = ""
+    var textDisplay: TextView? = null
+    private var _binding: ActivityMainBinding? = null
+    private val binding
+        get() = _binding?: throw NullPointerException("Binding is not initialized")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onStart() {
         super.onStart()
 
-        var add: String = ""
-        val textDisplay: TextView = findViewById(R.id.text_view)
-        val butt: Button = findViewById(R.id.button_0)
-        val butt1: Button = findViewById(R.id.button_1)
-        val butt2: Button = findViewById(R.id.button_2)
-        val butt3: Button = findViewById(R.id.button_3)
-        val butt4: Button = findViewById(R.id.button_4)
-        val butt5: Button = findViewById(R.id.button_5)
-        val butt6: Button = findViewById(R.id.button_6)
-        val butt7: Button = findViewById(R.id.button_7)
-        val butt8: Button = findViewById(R.id.button_8)
-        val butt9: Button = findViewById(R.id.button_9)
-        val buttPlus: Button = findViewById(R.id.button_plus)
-        val buttMinus: Button = findViewById(R.id.button_minus)
-        val buttMultiply: Button = findViewById(R.id.button_multiply)
-
-        butt.setOnClickListener { view ->
-
+        fun conclusionClickListener(view: View){
             add += (view as Button).text.toString()
-            textDisplay.text = add
-
+            binding.textView.text = add
         }
 
-        butt1.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button0.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        butt2.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button1.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        butt3.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button2.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        butt4.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button3.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        butt5.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button4.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        butt6.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button5.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        butt7.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button6.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        butt8.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button7.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        butt9.setOnClickListener { view ->
-
-            add += (view as Button).text.toString()
-            textDisplay.text = add
-
+        binding.button8.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        buttPlus.setOnClickListener { view ->
-
-            textDisplay.text = (view as Button).text.toString()
-
+        binding.button9.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        buttMinus.setOnClickListener { view ->
-
-            textDisplay.text = (view as Button).text.toString()
-
+        binding.buttonPlus.setOnClickListener {
+            conclusionClickListener(it)
         }
 
-        buttMultiply.setOnClickListener { view ->
-
-            textDisplay.text = (view as Button).text.toString()
-
+        binding.buttonMinus.setOnClickListener {
+            conclusionClickListener(it)
         }
 
+        binding.buttonMultiply.setOnClickListener {
+            conclusionClickListener(it)
+        }
+
+        binding.buttonEqually.setOnClickListener {
+            if (add.contains('+')){
+                makePlus()
+            } else if (add.contains('-')){
+                makeMinus()
+            } else if (add.contains('*')){
+                makeMult()
+            }
+        }
+
+    }
+
+    fun makePlus(){
+        val makeIndex = add.indexOf('+')
+        val firstChar = add.substring(0, makeIndex).toInt()
+        val secondChar = add.substring(makeIndex +1).toInt()
+        val result = firstChar + secondChar
+        add = ""
+        binding.textView.text = result.toString()
+    }
+
+    fun makeMinus(){
+        val makeIndex = add.indexOf('-')
+        val firstChar = add.substring(0, makeIndex).toInt()
+        val secondChar = add.substring(makeIndex +1).toInt()
+        val result = firstChar - secondChar
+        add = ""
+        binding.textView.text = result.toString()
+    }
+
+    fun makeMult(){
+        val makeIndex = add.indexOf('*')
+        val firstChar = add.substring(0, makeIndex).toInt()
+        val secondChar = add.substring(makeIndex +1).toInt()
+        val result = firstChar * secondChar
+        add = ""
+        binding.textView.text = result.toString()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
